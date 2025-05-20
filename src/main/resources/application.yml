@@ -1,0 +1,55 @@
+server:
+  port: 8080
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+spring:
+  security:
+    user:
+      name: admin
+      password: admin
+  # 数据库的配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver  # 如果使用的 mysq 版本比较老,那么就使用 com.mysql.jdbc.Driver .
+    password: "root"
+    username: "root"
+    url: jdbc:mysql://localhost:3306/TodoList?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 30MB
+      enabled: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+
+
+jwt:
+  secret: 8J6bZzqkRtA7X9LvMwYhN2PpQeFjHnKsDcV4BfGxTqWu3yJ5rCt0Oa1iEoUl+/M=
+  expiration: 3600
+
+# 静态资源映射
+file:
+  upload-dir: C:/uploads/images
+  access-path: /images/**
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.todo_list.model
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
