@@ -1,7 +1,9 @@
 package org.example.todo_list.exception;
 
+import org.example.todo_list.exception.errors.ErrorCode;
+
 public class ListException extends BaseException {
-    public ListException(Integer code, String message) {
-        super(code, message, "ListError");
+    public ListException(ErrorCode  errorCode) {
+        super(errorCode, "ListError");
     }
 }

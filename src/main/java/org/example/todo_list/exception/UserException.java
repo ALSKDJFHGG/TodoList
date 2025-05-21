@@ -1,7 +1,9 @@
 package org.example.todo_list.exception;
 
+import org.example.todo_list.exception.errors.ErrorCode;
+
 public class UserException extends BaseException {
-    public UserException(Integer code, String message) {
-        super(code, message, "UserError");
+    public UserException(ErrorCode errorCode) {
+        super(errorCode, "UserError");
     }
 }

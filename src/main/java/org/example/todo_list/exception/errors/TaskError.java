@@ -2,10 +2,11 @@ package org.example.todo_list.exception.errors;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
 @Getter
-public enum TaskError {
+public enum TaskError implements ErrorCode {
     // TODO 任务相关异常
 //    异常描述	    错误码	触发场景
 //    任务不存在	    2001	操作不存在任务
@@ -15,4 +16,5 @@ public enum TaskError {
 
     private final Integer code;
     private final String message;
+    private final HttpStatus httpStatus;
 }

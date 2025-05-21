@@ -34,7 +34,7 @@ public class TaskController {
 //
 //    @Operation(summary = "更新任务对应的参数")
 //    @PatchMapping({"/{id}"})
-//    public ApiResponse<?> updateTask(@PathVariable Long id,
+//    public ApiResponse<String> updateTask(@PathVariable Long id,
 //                                     @Valid @RequestBody UpdateTaskRequest updateTaskRequest, @RequestAttribute("userId") Long userId) {
 //        // TODO 根据id更新任务
 //

@@ -1,7 +1,9 @@
 package org.example.todo_list.exception;
 
+import org.example.todo_list.exception.errors.ErrorCode;
+
 public class TaskException extends BaseException {
-    public TaskException(Integer code, String message) {
-        super(code, message, "TaskError");
+    public TaskException(ErrorCode  errorCode) {
+        super(errorCode, "TaskError");
     }
 }

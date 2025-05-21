@@ -31,17 +31,11 @@ public class UserService {
         if (!username.matches("[a-zA-Z0-9_]{3,15}")) {
             // 可在此处打印异常信息
             log.warn("非法用户名是: {}", request.username());
-            throw new UserException(//抛出1001, "非法用户名"异常处理
-                    UserError.INVALID_USERNAME.getCode(),
-                    UserError.INVALID_USERNAME.getMessage()
-            );
+            throw new UserException(UserError.INVALID_USERNAME); //抛出1001, "非法用户名"异常处理
         }
         // 如果存在相同的用户名
         if (userRepository.existsByUsername(request.username())) {
-            throw new UserException(//抛出异常处理
-                    UserError.DUPLICATE_USERNAME.getCode(),
-                    UserError.DUPLICATE_USERNAME.getMessage()
-            );
+            throw new UserException(UserError.DUPLICATE_USERNAME); //抛出异常处理
         }
         // md5 加密密码
         String encodedPassword = passwordEncoder.encode(request.password());

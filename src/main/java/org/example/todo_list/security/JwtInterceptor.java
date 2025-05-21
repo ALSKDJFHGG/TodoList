@@ -43,10 +43,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             return true;
         }
         if (cookies == null) {
-            throw new UserException(
-                    UserError.NO_COOKIE.getCode(),
-                    UserError.NO_COOKIE.getMessage()
-            );
+            throw new UserException(UserError.NO_COOKIE);
         }
 
         List<Claims> res = new ArrayList<>();
@@ -61,9 +58,6 @@ public class JwtInterceptor implements HandlerInterceptor {
             Long userId = res.getFirst().get("userId", Long.class);
             request.setAttribute("userId", userId);
             return true;
-        } else throw new UserException(
-                UserError.NO_COOKIE.getCode(),
-                UserError.NO_COOKIE.getMessage()
-        );
+        } else throw new UserException(UserError.NO_COOKIE);
     }
 }
