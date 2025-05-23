@@ -36,6 +36,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")               // 拦截所有路径
                 .excludePathPatterns(
                         "/auth/**",
+                        "/user/**",
                         "/static/**",
                         "/v3/api-docs/**",
                         "/swagger-ui/**",
