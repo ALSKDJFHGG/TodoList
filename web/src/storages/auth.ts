@@ -1,31 +1,38 @@
+// storages/auth.ts
+
 import { User } from "@/models/user";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-/*
-* 这是一个非常有用的用户全局状态文件
-* zustand是什么？为什么要使用zustand?
-* zustand 是一个轻量的 React 状态管理库,简单来说
-* 存储了登录信息、主题模式、用户偏好等，可以在不同页面共享使用
-* */
+/**
+ * ✅ 说明：
+ * 全局用户认证状态管理
+ * - 使用 zustand 管理用户登录信息
+ * - 支持持久化存储（localStorage），实现刷新页面后仍保持登录
+ *
+ * ✅ 为什么使用 zustand？
+ * - 简洁轻量，无需 boilerplate
+ * - 不依赖 Context，性能更优
+ * - 使用简单但功能强大（如 persist 插件）
+ */
+
+// 用户状态接口
 interface AuthState {
-    user?: User;  //这个User是指User的类型(/model/User.tsx),包括头像，名字都会全局存储
-    setUser: (user?: User) => void;  //设置
-    clear: () => void; //登出时清空
+    user?: User;                      // 当前登录用户（包括用户名、头像等）
+    setUser: (user?: User) => void;  // 设置用户信息（登录后使用）
+    clear: () => void;               // 清空用户信息（登出时使用）
 }
 
-/* useAuthStore有use,setUser,clear这些属性 */
+// 创建状态管理：useAuthStore 包含 user, setUser, clear
 export const useAuthStore = create<AuthState>()(
     persist(
         (set, _get) => ({
-            setUser: (user?: User) => set({ user }),
-            clear: () => set({ user: undefined }),
+            setUser: (user?: User) => set({ user }),     // 设置用户
+            clear: () => set({ user: undefined }),       // 清空用户
         }),
-
-        /* 把这个状态持久化（保存）到 localStorage，就算用户刷新页面，也不会丢失登录信息 */
         {
-            name: "auth",
-            storage: createJSONStorage(() => localStorage),
+            name: "auth",                                 // localStorage 的 key 名称
+            storage: createJSONStorage(() => localStorage), // 使用 localStorage 存储
         }
     )
 );

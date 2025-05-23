@@ -69,7 +69,7 @@ export interface InputProps extends React.ComponentProps<"div"> {
     onBlur?: React.ComponentProps<"input">["onBlur"];
 }
 
-function Input(props: InputProps) {
+const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     const {
         size,
         icon,
@@ -83,13 +83,14 @@ function Input(props: InputProps) {
         onFocus,
         onBlur,
         slotProps,
-        ref,
         ...rest
     } = props;
+
     return (
         <div className={cn(["flex", "items-center", className])} {...rest}>
             {icon && <IconSection icon={icon} size={size} />}
             <input
+                ref={ref} // ✅ 将 ref 应用于原生 input
                 {...slotProps?.input}
                 disabled={disabled}
                 type={type}
@@ -110,7 +111,7 @@ function Input(props: InputProps) {
             {extraBtn && <ExtraBtnSection extraBtn={extraBtn} size={size} />}
         </div>
     );
-}
+});
 
 const extraBtnSection = cva(
     [
@@ -157,4 +158,5 @@ function ExtraBtnSection(props: ExtraBtnSectionProps) {
     );
 }
 
+Input.displayName = "Input"
 export { Input, inputVariants };

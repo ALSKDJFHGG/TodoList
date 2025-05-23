@@ -3,8 +3,6 @@ import router from "@/router";
 import { Toaster } from "sonner";
 
 function App() {
-
-
   return (
     <>
         <Toaster/>

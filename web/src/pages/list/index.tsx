@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getAllTodoLists, fetchByListId } from "@/api/todolist";
 import { toast } from "sonner";
-import { CreateTask } from "@/pages/list/create-task.tsx";
 import { Columns, TaskRow } from "@/pages/list/columns.tsx";
 import { createTask, getTask } from "@/api/task";
 import { cn } from "@/utils";
@@ -56,6 +55,14 @@ export default function ListDetailPage() {
                             category: category,
                             deadline: taskRes.data.deadline,
                         };
+                    }
+                    if (taskRes.code ===3002){
+                        toast.error(
+                            "没找到任务列表",{
+                                id:"add-error",
+                                description:res.msg
+                            }
+                        )
                     }
                     return null;
                 })

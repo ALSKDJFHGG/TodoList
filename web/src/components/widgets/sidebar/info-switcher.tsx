@@ -69,14 +69,15 @@ export function InfoSwitch(
                              ])}
                              fallback={"CN"} />
                 ):(< CircleUser
-                     strokeWidth={1.25}
+                     strokeWidth={1}
                             className={cn([
                                 "lg:w-[12vw]","lg:h-[12vw]",
                                 "w-[20vw]","h-[20vw]",
+                                "text-gray-300",
                             ])}
                              />)}
                 <DropdownMenu>
-                    <DropdownMenuTrigger className={"h-auto"} asChild>
+                    <DropdownMenuTrigger className={cn(["h-auto"])} asChild>
                         <SidebarMenuButton
                             size="lg"
                             className={cn(["flex","flex-row","justify-center","w-50","gap-3"
@@ -100,15 +101,15 @@ export function InfoSwitch(
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent
-                        className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+                        className={cn(["w-[--radix-dropdown-menu-trigger-width]","min-w-56","rounded-lg"])}
                         align="start"
                         side={isMobile ? "bottom" : "right"}
                         sideOffset={4}
                     >
                         {items.map((item) => (
                             <DropdownMenuItem key={item.title} onClick={() => handleItemClick(item)} className="gap-2 p-2 font-medium">
-                                <div className="flex size-6 items-center justify-center rounded-sm border">
-                                    <item.logo className="size-5 shrink-0" />
+                                <div className={cn(["flex","size-6","items-center","justify-center","rounded-sm","border"])}>
+                                    <item.logo className={cn(["size-5","shrink-0"])} />
                                 </div>
                                 {item.title}
                             </DropdownMenuItem>

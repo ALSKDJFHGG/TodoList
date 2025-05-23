@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/data-table";
 import { updateTask } from "@/api/task";
 import { toast } from "sonner";
-import { ArrowDown, ArrowUp, ArrowUpDown, EditIcon, TrashIcon } from "lucide-react";
+import { EditIcon, TrashIcon } from "lucide-react";
 import { cn } from "@/utils";
 import { Button } from "@/components/ui/button.tsx";
 import { Dialog, DialogContent } from "@/components/ui/dialog.tsx";
@@ -29,7 +29,7 @@ export function Columns({ tasks, loading,onUpdated }: ColumnProps) {
         {
             accessorKey:"status",
             id:"status",
-            header:()=><div className={"justify-self-center"}>状态</div>,
+            header:()=><div className={cn(["justify-self-center"])}>状态</div>,
             cell:({row})=>{
                 const  status = row.getValue<boolean>("status")
                 const name =row.getValue<string>("name")
@@ -69,7 +69,7 @@ export function Columns({ tasks, loading,onUpdated }: ColumnProps) {
         },
         {
             accessorKey: "name",
-            header: ()=><div className={"justify-self-center"}>任务名称</div>,
+            header: ()=><div className={cn(["justify-self-center"])}>任务名称</div>,
             cell: ({ row }) => {
                 const name = row.getValue("name") as string
                 const status = row.getValue("status") as boolean; /*如果true显示删除字体*/
@@ -88,8 +88,10 @@ export function Columns({ tasks, loading,onUpdated }: ColumnProps) {
         {
             accessorKey:"deadline",
             id:"deadline",
-            header:({column})=>{
-                const Icon = useMemo(() => {
+            sortingFn: "basic",
+            /*{column}*/
+            header:(/*{column}*/)=>{
+                /*const Icon = useMemo(() => {
                     switch (column.getIsSorted()) {
                         case "asc":
                             return ArrowUp;
@@ -99,16 +101,16 @@ export function Columns({ tasks, loading,onUpdated }: ColumnProps) {
                         default:
                             return ArrowUpDown;
                     }
-                },[column.getIsSorted()])
+                },[column.getIsSorted()])*/
                 return(
-                    <div className={cn(["flex", "gap-1", "justify-self-center","items-center"])}>
+                    <div className={cn(["flex", "gap-1", "justify-center","items-center"])}>
                         截止于
-                        <Button
+                        {/*<Button
                             icon={Icon}
                             square
                             size={"sm"}
                             onClick={()=>column.toggleSorting()}
-                        />
+                        />*/}
                     </div>
                 )
             },

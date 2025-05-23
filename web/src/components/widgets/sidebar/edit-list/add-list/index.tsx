@@ -42,7 +42,14 @@ function AddList({onAddSuccess}:{onAddSuccess:()=>void}){
                         navigate(`/list/${values.category}`)
                         setOpen(false)
                         onAddSuccess()
-                    } else {
+                    }
+                    else if (res.code ===3001) {
+                        toast.error("已存在类别", {
+                            id: "add-error",
+                            description: res.msg
+                        })
+                    }
+                    else {
                         toast.error("列表添加失败", {
                             id: "add-error",
                             description: res.msg
@@ -68,7 +75,7 @@ function AddList({onAddSuccess}:{onAddSuccess:()=>void}){
 
             <DialogContent className={cn(["p-4"])}>
                 <DialogHeader>
-                    <DialogTitle className={cn(["flex","flex-row","items-center"])}> <ScrollText/>添加列表</DialogTitle>
+                    <DialogTitle className={cn(["flex","flex-row","items-center","gap-3"])}> <ScrollText/>添加列表</DialogTitle>
                     <DialogDescription></DialogDescription>
                 </DialogHeader>
                 <Form {...form}>

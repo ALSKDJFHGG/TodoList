@@ -74,7 +74,7 @@ function DeleteListDialog(
                 <p className={cn(["text-lg","font-medium","text-center"])}>
                     你确定要删除列表 {category} 吗？
                 </p>
-                <div className={cn(["flex", "justify-end"])}>
+                <div className={cn(["flex","justify-end"])}>
                     <Button
                         level={"error"}
                         variant={"tonal"}

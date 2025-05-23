@@ -66,7 +66,7 @@ export function UpdateListDialog
                 <SquarePen className={cn(["size-8"])}/>
                 编辑列表名称</h2>
             <Form {...form}>
-                <form onSubmit={onSubmit} className="space-y-4">
+                <form onSubmit={onSubmit} className={cn(["space-y-4"])}>
                     <FormField
                         control={form.control}
                         name="category"

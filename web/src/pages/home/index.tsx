@@ -51,7 +51,7 @@ export default function Home() {
                             "border-white/20"           // 半透明白边框
                         ])}>
                             <CardHeader className={cn(["flex","flex-col","items-start"])}>
-                                <div className={"flex"}>
+                                <div className={cn(["flex"])}>
                                     <SplitText
                                         text={"欢迎"}
                                         className={cn(["text-2xl"," font-semibold","text-center","text-white"])}
@@ -81,7 +81,7 @@ export default function Home() {
                                 <p className={cn(["text-white/90","text-center"])}>
                                     你现在还没有任何列表
                                 </p>
-                                <Button variant={"ghost"} className={"bg-white/50"}>
+                                <Button variant={"ghost"} className={cn(["bg-white/50"])}>
                                     <p className={cn(["text-center","text-base","text-black/90"])}>
                                         开始新建列表,完成任务吧😊
                                     </p>

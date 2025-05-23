@@ -68,17 +68,17 @@ function RegisterForm() {
                     navigate("/account/login");
                 }
 
-                if (res.code === 400) {
-                    toast.success("注册失败", {
+                else if (res.code === 400) {
+                    toast.error("注册失败", {
                         id: "register-error",
                         description: res.msg,
                     });
                 }
 
-                if (res.code === 409) {
-                    toast.success("注册失败", {
+                else if (res.code === 1003) {
+                    toast.error("用户名已存在", {
                         id: "register-error",
-                        description: "用户名重复",
+                        description: res.msg,
                     });
                 }
             })
@@ -92,10 +92,10 @@ function RegisterForm() {
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 autoComplete={"off"}
-                className={cn(["flex", "flex-col", "h-full", "gap-8"])}
+                className={cn(["flex","flex-col","h-full","gap-8"])}
             >
-                <div className={cn("space-y-3", "flex-1")}>
-                    <div className={cn(["flex", "gap-3", "items-center"])}>
+                <div className={cn("space-y-3","flex-1")}>
+                    <div className={cn(["flex","gap-3","items-center"])}>
                         <FormField
                             control={form.control}
                             name={"username"}
