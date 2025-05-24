@@ -1,5 +1,5 @@
 export interface TodoList {
-    id?: number;
-    category?: string;
-    tasks?: number[];
+  id?: number;
+  category?: string;
+  tasks?: number[];
 }

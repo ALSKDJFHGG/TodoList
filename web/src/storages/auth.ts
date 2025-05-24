@@ -18,21 +18,21 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 // 用户状态接口
 interface AuthState {
-    user?: User;                      // 当前登录用户（包括用户名、头像等）
-    setUser: (user?: User) => void;  // 设置用户信息（登录后使用）
-    clear: () => void;               // 清空用户信息（登出时使用）
+  user?: User; // 当前登录用户（包括用户名、头像等）
+  setUser: (user?: User) => void; // 设置用户信息（登录后使用）
+  clear: () => void; // 清空用户信息（登出时使用）
 }
 
 // 创建状态管理：useAuthStore 包含 user, setUser, clear
 export const useAuthStore = create<AuthState>()(
-    persist(
-        (set, _get) => ({
-            setUser: (user?: User) => set({ user }),     // 设置用户
-            clear: () => set({ user: undefined }),       // 清空用户
-        }),
-        {
-            name: "auth",                                 // localStorage 的 key 名称
-            storage: createJSONStorage(() => localStorage), // 使用 localStorage 存储
-        }
-    )
+  persist(
+    (set, _get) => ({
+      setUser: (user?: User) => set({ user }), // 设置用户
+      clear: () => set({ user: undefined }), // 清空用户
+    }),
+    {
+      name: "auth", // localStorage 的 key 名称
+      storage: createJSONStorage(() => localStorage), // 使用 localStorage 存储
+    }
+  )
 );

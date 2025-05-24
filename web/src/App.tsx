@@ -5,10 +5,10 @@ import { Toaster } from "sonner";
 function App() {
   return (
     <>
-        <Toaster/>
-        <RouterProvider router={ router}/>
+      <Toaster />
+      <RouterProvider router={router} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

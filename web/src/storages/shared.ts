@@ -14,12 +14,12 @@ import { create } from "zustand";
 
 // 共享状态接口
 interface SharedState {
-    refresh: number;        // 每次更新都会自增，触发依赖该值的组件重新渲染
-    setRefresh: () => void; // 执行一次刷新：refresh + 1
+  refresh: number; // 每次更新都会自增，触发依赖该值的组件重新渲染
+  setRefresh: () => void; // 执行一次刷新：refresh + 1
 }
 
 // 创建共享状态管理：useSharedStore 包含 refresh 和 setRefresh
 export const useSharedStore = create<SharedState>()((set, get) => ({
-    refresh: 0,
-    setRefresh: () => set({ refresh: get().refresh + 1 }),
+  refresh: 0,
+  setRefresh: () => set({ refresh: get().refresh + 1 }),
 }));

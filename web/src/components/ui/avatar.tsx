@@ -9,18 +9,12 @@ interface AvatarProps {
 
 const Avatar = ({ src, fallback, className }: AvatarProps) => {
   return (
-      <RadixAvatar.Root
-          className={`relative flex shrink-0 overflow-hidden rounded-full ${className || ""}`}
-      >
-        <RadixAvatar.Image
-            className="h-full w-full object-cover"
-            src={src}
-            alt="Avatar"
-        />
-        <RadixAvatar.Fallback className="flex h-full w-full items-center justify-center bg-gray-200">
-          {fallback}
-        </RadixAvatar.Fallback>
-      </RadixAvatar.Root>
+    <RadixAvatar.Root className={`relative flex shrink-0 overflow-hidden rounded-full ${className || ""}`}>
+      <RadixAvatar.Image className="h-full w-full object-cover" src={src} alt="Avatar" />
+      <RadixAvatar.Fallback className="flex h-full w-full items-center justify-center bg-gray-200">
+        {fallback}
+      </RadixAvatar.Fallback>
+    </RadixAvatar.Root>
   );
 };
 

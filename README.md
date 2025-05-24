@@ -1,4 +1,15 @@
-# 项目介绍
+# 前言
+
+## 致谢
+
+感谢每一位为本项目添砖加瓦的小伙伴，欢迎关注（Follow）！
+
+职责|名字
+:-:|:-:
+主要开发者|后端 [@llc141525](https://github.com/llc141525)，前端 [@Albertknight2023](https://github.com/Albertknight2023)
+注释与提示|注解 [@798156](https://github.com/798156)，视频 [@R1pplon](https://github.com/R1pplon)
+
+## 简介
 
 本项目将实现一个具备完整功能的 TodoList 系统，主要功能模块包括：
 
@@ -382,8 +393,8 @@ web/
 ├── node_modules/            // 项目依赖文件夹（自动生成）
 ├── public/                  // 公共资源目录
 ├── src/                     // 源代码主目录
-│   ├── api/                 // 接口请求封装（如 axios 实例、API 方法等）
-│   ├── assets/              // 静态资源目录(可以修改你的Todo-List的Logo)
+│   ├── api/                 // 接口请求封装（如 API 方法）
+│   ├── assets/              // 静态资源目录（可以修改你的 Todo-List 的 Logo）
 │   ├── components/          // 通用组件库（按钮、模态框等）
 │   ├── lib/                 // 第三方库封装或工具库
 │   ├── models/              // 类型模型定义（如接口响应结构等）
@@ -928,6 +939,7 @@ export { LoginForm };
 
 
 下载地址：[React Developer Tools – React](https://react.dev/learn/react-developer-tools)
+
 ![屏幕截图 2025-05-11 101132](./assets/屏幕截图%202025-05-11%20101132.png)
 
 #### **查看组件树结构**(左侧)
