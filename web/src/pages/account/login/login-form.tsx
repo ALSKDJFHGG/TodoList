@@ -41,7 +41,7 @@ function LoginForm() {
       .then((res) => {
         console.log("登录接口返回：", res); // 打印接口返回值
         if (res.code === 200) {
-          const avatar_url = `http://localhost:8080${res.data?.avatarUrl}`;
+          const avatar_url = res.data?.avatarUrl;
           authStore.setUser({
             ...res.data,
 

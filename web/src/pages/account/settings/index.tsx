@@ -75,7 +75,7 @@ function MyProfile() {
         toast.success("上传成功");
         authStore.setUser({
           ...authStore.user!,
-          avatarUrl: `http://localhost:8080${res.data}`,
+          avatarUrl: res.data,
         });
         sharedStore.setRefresh();
       } else if (res.code === 1006) {
