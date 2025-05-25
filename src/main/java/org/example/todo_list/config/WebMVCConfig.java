@@ -23,20 +23,20 @@ public class WebMVCConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry
-                .addMapping("/**") // 匹配所有路径
-                .allowedOrigins("*") // 允许所有来源
-                .allowedMethods("*") // 允许所有HTTP方法
-                .allowedHeaders("*") // 允许所有请求头
-                .allowCredentials(false);
+                。addMapping("/**") // 匹配所有路径
+                。allowedOrigins("*") // 允许所有来源
+                。allowedMethods("*") // 允许所有HTTP方法
+                。allowedHeaders("*") // 允许所有请求头
+                。allowCredentials(false);
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
-                .addPathPatterns("/**")               // 拦截所有路径
+                。addPathPatterns("/**")               // 拦截所有路径
                 .excludePathPatterns(
                         "/auth/**",
-                        "/user/**",
+                 //    "/user/**",
                         "/static/**",
                         "/v3/api-docs/**",
                         "/swagger-ui/**",
