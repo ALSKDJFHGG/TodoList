@@ -24,7 +24,7 @@ public class TodoListService {
 │
 ├─→ 检查用户是否存在
 │   ├─→ 存在 → 继续流程
-│   └─→ 不存在 → 抛出 USER_NOT_FOUND
+│   └─→ 不存在 → 抛出 USER_NULL
 │
 ├─→ 用户专属 category 检查
 │   ├─→ 已有该 category → 抛出 LIST_ALREADY_EXISTS
@@ -46,7 +46,7 @@ public class TodoListService {
 │   │        ├─→ 用户存在
 │   │        │       ├─→ 解除用户与TodoList的关联
 │   │        │       └─→ 删除TodoList
-│   │        └─→ 用户不存在 → 抛出 USER_NOT_FOUND → 结束
+│   │        └─→ 用户不存在 → 抛出 USER_NULL→ 结束
 │   └─→ 不存在 → 抛出 LIST_NOT_EXIST → 结束
 */
 
@@ -55,7 +55,7 @@ public class TodoListService {
 /*TODO 更新 todolist 的类别
 开始更新类别
 ├─→ 根据userId查找用户
-│   ├─→ 用户不存在 → 抛出 USER_NOT_FOUND 异常 → 结束
+│   ├─→ 用户不存在 → 抛出 USER_NULL 异常 → 结束
 │   └─→ 用户存在 → 继续流程
 │           └─→ 检查该用户下是否存在newCategory的任务列表
 │               ├─→ 存在 → 抛出 LIST_ALREADY_EXISTS 异常 → 结束
