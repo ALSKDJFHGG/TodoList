@@ -47,9 +47,20 @@ public class UserService {
     }
 
 
-//    public boolean login(LoginRegisterRequest request) {
-//    }
-/*TODO 登录
+    public boolean login(LoginRegisterRequest request) {
+        User user = userRepository.findByUsername(request.username());
+
+        if (!userRepository.existsByUsername(user.getUsername())) {
+            throw new UserException(UserError.USER_NOT_FOUND);
+        }
+
+        if (passwordEncoder.matches(request.password(), user.getPassword())) {
+            return true;
+        } else {
+            throw new UserException(UserError.AUTHENTICATION_FAILURE);
+        }
+    }
+/*TODO 登录----ok
 你需要处理
 - 如果用户名不存在
 - 如果密码错误

@@ -9,12 +9,14 @@ import java.net.http.HttpClient;
 @Getter
 @AllArgsConstructor
 public enum UserError  implements ErrorCode{
-    // TODO 补充用户相关异常处理. 登陆的时候用户名或者密码错误等等 ...
+    // TODO 补充用户相关异常处理. 登陆的时候用户名或者密码错误等等 ... ---ok
     // 注册的时候使用了非法字符
     INVALID_USERNAME(1001, "非法用户名", HttpStatus.BAD_REQUEST),
     // 注册的时候不能有重复的用户名
+    AUTHENTICATION_FAILURE(1002, "用户名或密码错误", HttpStatus.UNAUTHORIZED),
     DUPLICATE_USERNAME(1003, "用户名已经存在", HttpStatus.BAD_REQUEST),
     NO_COOKIE(1004, "未登录访问", HttpStatus.UNAUTHORIZED),
+    USER_NOT_FOUND(1005, "用户不存在", HttpStatus.NOT_FOUND),
     INVALID_FILE(1006, "上传文件不存在", HttpStatus.NOT_FOUND),;
 
 //    异常描述	      错误码	    触发场景
