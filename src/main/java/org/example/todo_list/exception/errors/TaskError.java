@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @Getter
 public enum TaskError implements ErrorCode {
-    // TODO 任务相关异常
+    // TODO 任务相关异常---ok
 //    异常描述	    错误码	触发场景
 //    任务不存在	    2001	操作不存在任务
     TASK_NOT_FOUND(2001, "任务不存在", HttpStatus.NOT_FOUND),

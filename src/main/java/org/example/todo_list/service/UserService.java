@@ -3,6 +3,7 @@ package org.example.todo_list.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.todo_list.dto.request.LoginRegisterRequest;
+import org.example.todo_list.dto.request.UpdateUserRequest;
 import org.example.todo_list.exception.UserException;
 import org.example.todo_list.exception.errors.UserError;
 import org.example.todo_list.model.User;
@@ -22,7 +23,7 @@ public class UserService {
     @Value("${file.access-path}")
     private String accessPath;
 
-    @Value("${file.upload-dir}")//将图片保存在本地c磁盘下
+    @Value("${file.upload-dir}")//将图片保存在当前项目路径下
     private String uploadDir;
 
     public void register(LoginRegisterRequest request) {
@@ -98,9 +99,31 @@ public class UserService {
 */
 
 
-//    public void updateUser(Long id, UpdateUserRequest newUser) {
-//    }
-/*TODO  更新用户信息
+    public void updateUser(Long id, UpdateUserRequest newUser) {
+        if (userRepository.existsById(id)) {
+            User user = userRepository.getReferenceById(id);
+
+            String new_username = newUser.username();
+            if (!(new_username == null || new_username.isEmpty())) {
+                if (!new_username.matches("[a-zA-Z0-9_]{3,15}")) {
+                    log.warn("非法用户名: {}", new_username);
+                    throw new UserException(UserError.INVALID_USERNAME);
+                }
+                user.setUsername(new_username);
+            }
+
+            String new_password = newUser.password();
+            if (!(new_password == null || new_password.isEmpty())) {
+                String encodePassword = passwordEncoder.encode(new_password);
+                user.setPassword(encodePassword);
+            }
+            userRepository.save(user);
+
+        } else {
+            throw new UserException(UserError.USER_NOT_FOUND);
+        }
+    }
+/*TODO  更新用户信息----ok
 开始更新用户
 └── 通过ID查找用户
     ├── 用户是否存在？[判断]

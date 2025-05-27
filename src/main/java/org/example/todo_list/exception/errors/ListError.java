@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 @Getter
 public enum ListError implements ErrorCode {
-    // TODO 任务列表相关异常
+    // TODO 任务列表相关异常-----ok
 //    异常描述	    错误码	触发场景
 //    重复任务列表分类	    3001	创建重复分类的任务列表
     TASKLIST_CATEGORY_CONFLICT(3001, "重复任务列表分类", HttpStatus.CONFLICT),
