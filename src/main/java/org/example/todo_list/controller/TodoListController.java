@@ -20,13 +20,16 @@ import java.util.List;
 @RequiredArgsConstructor// 通过 Lombok 自动生成包含所有 final 字段的构造函数，简化代码书写。
 public class TodoListController {
 
-//private final TodoListService todoListService;
+private final TodoListService todoListService;
 
-//    @Operation(summary = "新建一个任务列表，返回"创建成功"字符串")
-//    @PutMapping("/{category}")
-//    public ApiResponse<String> create(@PathVariable String category, @RequestAttribute Long userId) {
-//        // TODO 新建一个任务列表
-//    }
+    @Operation(summary = "新建一个任务列表，返回'创建成功'字符串")
+    @PutMapping("/{category}")
+    public ApiResponse<String> create(@PathVariable String category, @RequestAttribute Long userId) {
+        // TODO 新建一个任务列表
+        todoListService.create(category, userId);
+
+        return ApiResponse.success("创建任务列表成功");
+    }
 
 //    @Operation(summary = "根据id删除任务列表，返回"删除成功"字符串")
 //    @DeleteMapping("/{id}")

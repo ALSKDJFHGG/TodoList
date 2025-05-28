@@ -2,11 +2,18 @@ package org.example.todo_list.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.example.todo_list.exception.UserException;
+import org.example.todo_list.exception.errors.ListError;
+import org.example.todo_list.exception.errors.UserError;
+import org.example.todo_list.model.TodoList;
+import org.example.todo_list.model.User;
 import org.example.todo_list.repository.jpa.TaskRepository;
 import org.example.todo_list.repository.jpa.TodoListRepository;
 import org.example.todo_list.repository.jpa.UserRepository;
 import org.example.todo_list.security.JwtUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service//表示该类是一个Spring服务组件，用于业务逻辑处理。
 @RequiredArgsConstructor //自动生成包含所有final字段的构造函数
@@ -16,9 +23,26 @@ public class TodoListService {
     private final UserRepository userRepository;
     private final JwtUtils jwtUtils;
 
-//    public void create(String category, Long userId) {
-//
-//    }
+    public void create(String category, Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new UserException(UserError.USER_NOT_FOUND);
+        }
+
+        if (todoListRepository.existsByUser_IdAndCategory(userId, category)) {
+            throw new UserException(ListError.TASKLIST_ALREADY_EXIST);
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserException(UserError.USER_NOT_FOUND));
+
+        TodoList newList = new TodoList();
+        newList.setCategory(category);
+        newList.setUser(user);
+
+        user.getTodoLists().add(newList);
+
+        todoListRepository.save(newList);
+    }
  /* TODO 新建任务列表
 开始创建任务列表
 │

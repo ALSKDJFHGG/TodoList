@@ -12,7 +12,8 @@ public enum ListError implements ErrorCode {
 //    重复任务列表分类	    3001	创建重复分类的任务列表
     TASKLIST_CATEGORY_CONFLICT(3001, "重复任务列表分类", HttpStatus.CONFLICT),
 //    任务列表不存在	    3002	操作不存在任务列表
-    TASKLIST_NOT_FOUND(3002, "任务列表不存在", HttpStatus.NOT_FOUND)
+    TASKLIST_NOT_FOUND(3002, "任务列表不存在", HttpStatus.NOT_FOUND),
+    TASKLIST_ALREADY_EXIST(1003, "任务列表已存在", HttpStatus.CONFLICT)
     ;
 
     private final Integer code;

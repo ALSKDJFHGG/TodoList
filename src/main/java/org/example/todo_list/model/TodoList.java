@@ -23,6 +23,7 @@ public class TodoList {
     private Long id;
 
     private String category;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "user_id")
