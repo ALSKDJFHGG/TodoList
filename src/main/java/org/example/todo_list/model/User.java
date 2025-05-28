@@ -1,5 +1,6 @@
 package org.example.todo_list.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -25,6 +26,7 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     @ToString.Exclude
+    @JsonIgnoreProperties(value = "user")
     private List<TodoList> todoLists = new ArrayList<>();
 
     public void addTodoList(TodoList todoList) {

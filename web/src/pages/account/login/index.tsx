@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { Link } from "react-router-dom";
 import { UserRoundPlus } from "lucide-react";
 import { Separator } from "@/components/ui/separator.tsx";
-import logo from "@/assets/logo.jpg";
+import logo from "@/assets/logo_backup.jpg";
 export default function () {
   return (
     <div className={cn("flex flex-1", "items-center", "justify-center")}>

@@ -11,6 +11,15 @@ import org.example.todo_list.repository.jpa.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -77,9 +86,56 @@ public class UserService {
 └───└───────└──流程结束返回ture
 */
 
-//    public String storeFile(Long userId, MultipartFile file) throws IOException {
-//    }
-/* TODO 存储头像图片. 随意你存储在哪里, 只要最终可以通过 http://localhost:8080/images/文件名 这个地址访问到对应的图片就算成功
+    public String storeFile(Long userId, MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new UserException(UserError.INVALID_FILE);
+        }
+
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null || file.getOriginalFilename().isEmpty()) {
+            throw new UserException(UserError.INVALID_FILE);
+        }
+
+        String extension = "";
+        int dotIndex = originalFilename.lastIndexOf('.');
+        if (dotIndex > 0) {
+            extension = originalFilename.substring(dotIndex);
+        } else {
+            throw new UserException(UserError.INVALID_FILE_EXTENSION);
+        }
+
+        String newFilename = UUID.randomUUID() + extension;
+
+        Path uploadPath = Paths.get(uploadDir);
+        System.out.println("===============");
+        System.out.println(uploadPath);
+        try {
+            // 创建目录（如果不存在）
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            // 保存文件
+            Path targetPath = uploadPath.resolve(newFilename);
+            try (InputStream is = file.getInputStream()) {
+                Files.copy(is, targetPath, StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (IOException e) {
+            log.error("文件存储失败: {}", e.getMessage());
+            throw new UserException(UserError.INVALID_FILE);
+        }
+
+        String accessUrl = accessPath.replace("/**", "") + "/" + newFilename;
+
+        // 更新用户头像
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserException(UserError.USER_NOT_FOUND));
+        user.setAvatarUrl(accessUrl);
+        userRepository.save(user);
+
+        return accessUrl;
+    }
+/* TODO 存储头像图片. 随意你存储在哪里, 只要最终可以通过 http://localhost:8080/images/文件名 这个地址访问到对应的图片就算成功----ok
 开始上传文件
 ├─→ 文件是否为空?
 │   ├─→ 是 → 抛出INVALID_FILE异常

@@ -2,6 +2,7 @@ package org.example.todo_list.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.todo_list.dto.request.CreateTaskRequest;
 import org.example.todo_list.repository.jpa.TaskRepository;
 import org.example.todo_list.repository.jpa.TodoListRepository;
 import org.example.todo_list.repository.jpa.UserRepository;
@@ -17,8 +18,9 @@ public class TaskService {
     private final TodoListService todoListService;
     private final UserRepository userRepository;
 
-//    public void createTask(CreateTaskRequest createTaskRequest, Long userId) {
-//    }
+    public void createTask(CreateTaskRequest createTaskRequest, Long userId) {
+
+    }
 /*   TODO 新建任务:
 你需要处理的业务异常:
 - 如果不存在对应的任务类别

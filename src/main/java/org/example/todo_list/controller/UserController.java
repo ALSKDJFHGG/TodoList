@@ -6,6 +6,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.todo_list.dto.request.LoginRegisterRequest;
 import org.example.todo_list.dto.request.UpdateUserRequest;
 import org.example.todo_list.dto.response.UserResponse;
@@ -17,10 +18,14 @@ import org.example.todo_list.security.JwtUtils;
 import org.example.todo_list.service.UserService;
 import org.example.todo_list.utils.ApiResponse;
 import org.example.todo_list.utils.CookieUtil;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Duration;
 
+@Slf4j
 @Tag(name = "用户相关Api", description = "用于登录和注册")
 @RestController
 @RequestMapping("/user")
@@ -96,12 +101,27 @@ public class UserController {
 //*/
 
 
-//    @Operation(summary = "用于上传头像", description = "传入一个 id, 用于指定传入的头像归属于那个用户. 一个图片文件作为头像. 记得设置 content-type 为 multipart/form-data")
-//    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ApiResponse<String> upload(@RequestParam("file") MultipartFile file,
-//                                      @RequestAttribute("userId") Long id) throws IOException {
-//       //TODO 更新头像 api 需要了解如何上传文件.
-//    }
+    @Operation(summary = "用于上传头像", description = "传入一个 id, 用于指定传入的头像归属于那个用户. 一个图片文件作为头像. 记得设置 content-type 为 multipart/form-data")
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<String> upload(@RequestParam("file") MultipartFile file,
+                                      @RequestAttribute("userId") Long id) throws IOException {
+       //TODO 更新头像 api 需要了解如何上传文件.----ok
+        try {
+            if (file == null || file.isEmpty()) {
+                throw new UserException(UserError.INVALID_FILE);
+            }
+
+            String storedFile = userService.storeFile(id, file);
+
+            return ApiResponse.success(storedFile);
+        } catch (UserException e) {
+            log.warn("头像上传业务异常 [用户ID:{}]: {}", id, e.getErrorType());
+            return ApiResponse.error(1234, e.getMessage());
+        } catch (Exception e) {
+            log.error("头像上传系统异常 [用户ID:{}]", id, e);
+            return ApiResponse.error(1234, "erroe");
+        }
+    }
 
 
     @Operation(summary = "登出", description = "想要删除 cookie 就把这个 token 的生命周期设置为 0 就可以了.")

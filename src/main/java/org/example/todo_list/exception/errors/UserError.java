@@ -17,7 +17,8 @@ public enum UserError  implements ErrorCode{
     DUPLICATE_USERNAME(1003, "用户名已经存在", HttpStatus.BAD_REQUEST),
     NO_COOKIE(1004, "未登录访问", HttpStatus.UNAUTHORIZED),
     USER_NOT_FOUND(1005, "用户不存在", HttpStatus.NOT_FOUND),
-    INVALID_FILE(1006, "上传文件不存在", HttpStatus.NOT_FOUND),;
+    INVALID_FILE(1006, "上传文件不存在", HttpStatus.NOT_FOUND),
+    INVALID_FILE_EXTENSION(1007, "扩展名错误", HttpStatus.NOT_FOUND);
 
 //    异常描述	      错误码	    触发场景
 //    非法用户名	      1001	    用户名不符合格式规范

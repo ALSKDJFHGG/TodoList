@@ -18,10 +18,12 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver  # 如果使用的 mysq 版本比较老,那么就使用 com.mysql.jdbc.Driver .
     password: "1234"
     username: "root"
-    url: jdbc:mysql://localhost:3306/TodoList?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://192.168.43.134:3306/TodoList?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
   jpa:
     hibernate:
       ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
     properties:
       hibernate:
