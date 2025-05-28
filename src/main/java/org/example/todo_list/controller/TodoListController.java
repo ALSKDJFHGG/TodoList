@@ -31,11 +31,16 @@ private final TodoListService todoListService;
         return ApiResponse.success("创建任务列表成功");
     }
 
-//    @Operation(summary = "根据id删除任务列表，返回"删除成功"字符串")
-//    @DeleteMapping("/{id}")
-//    public ApiResponse<String> delete(@PathVariable Long id, @RequestAttribute Long userId) {
-//        // TODO 删除任务列表
-//    }
+    @Operation(summary = "根据id删除任务列表，返回'删除成功'字符串")
+    @DeleteMapping("/{id}")
+    public ApiResponse<String> delete(@PathVariable Long id, @RequestAttribute Long userId) {
+        // TODO 删除任务列表
+
+        todoListService.delete(id, userId);
+
+        return ApiResponse.success("删除任务列表成功");
+
+    }
 
 //    @Operation(summary = "根据id修改列表的类别，返回"修改成功"字符串")
 //    @PatchMapping("/change_category/{id}")
@@ -45,13 +50,17 @@ private final TodoListService todoListService;
 //
 //    }
 
-//    @Operation(summary = "获取所有的任务列表，返回一个表示操作成功的API响应，ApiResponse.success(lists)",
-//            description = "注意, 这个api返回的值是一个json格式的数据, 每个对象包含一个 category(类别) " +
-//                    "tasks(保存的是task的id),如果你你想获取对应的id, 那么你需要调用task的api -> /task/get 逐个获取task")
-//    @GetMapping({"/", ""})
-//    public ApiResponse<List<GetListResponse>> fetch(@RequestAttribute Long userId) {
-//        // TODO 获取所有的任务列表
-//    }
+    @Operation(summary = "获取所有的任务列表，返回一个表示操作成功的API响应，ApiResponse.success(lists)",
+            description = "注意, 这个api返回的值是一个json格式的数据, 每个对象包含一个 category(类别) " +
+                    "tasks(保存的是task的id),如果你你想获取对应的id, 那么你需要调用task的api -> /task/get 逐个获取task")
+    @GetMapping({"/", ""})
+    public ApiResponse<List<GetListResponse>> fetch(@RequestAttribute Long userId) {
+        // TODO 获取所有的任务列表
+
+        List<GetListResponse> lists = todoListService.getAllLists(userId);
+
+        return ApiResponse.success(lists);
+    }
 
 //    @Operation(summary = "根据id获取任务列表，返回一个封装了任务列表查询结果的响应对象,ApiResponse.success(getListResponse)")
 //    @GetMapping("/{id}")

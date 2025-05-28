@@ -27,8 +27,9 @@ public interface TodoListRepository extends JpaRepository<TodoList, Long> {
 
     @Modifying
     @Transactional
-    @Query("delete from TodoList t where t.user.id = :userId")
-    void deleteAllByUser_Id(@Param("userId") Long userId);
+    @Query("delete from TodoList t where t.user.id = :userId and t.id = :Id")
+    void deleteAllByIdAndUser_Id(@Param("Id") Long id, @Param("userId") Long userId);
+
 
 }
 

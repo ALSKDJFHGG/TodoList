@@ -2,9 +2,11 @@ package org.example.todo_list.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.example.todo_list.dto.response.GetListResponse;
 import org.example.todo_list.exception.UserException;
 import org.example.todo_list.exception.errors.ListError;
 import org.example.todo_list.exception.errors.UserError;
+import org.example.todo_list.model.Task;
 import org.example.todo_list.model.TodoList;
 import org.example.todo_list.model.User;
 import org.example.todo_list.repository.jpa.TaskRepository;
@@ -13,7 +15,10 @@ import org.example.todo_list.repository.jpa.UserRepository;
 import org.example.todo_list.security.JwtUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service//表示该类是一个Spring服务组件，用于业务逻辑处理。
 @RequiredArgsConstructor //自动生成包含所有final字段的构造函数
@@ -24,6 +29,7 @@ public class TodoListService {
     private final JwtUtils jwtUtils;
 
     public void create(String category, Long userId) {
+
         if (!userRepository.existsById(userId)) {
             throw new UserException(UserError.USER_NOT_FOUND);
         }
@@ -60,9 +66,14 @@ public class TodoListService {
     └─→ 建立用户-列表双向关联
 */
 
-//    public void delete(Long id, Long userId) {
-//
-//    }
+    public void delete(Long id, Long userId) {
+        if (!todoListRepository.existsById(id)) {
+            throw new UserException(ListError.TASKLIST_NOT_FOUND);
+        }
+
+        todoListRepository.deleteAllByIdAndUser_Id(id, userId);
+
+    }
 /* TODO 删除 todolist
 开始删除TodoList
 ├─→ 根据id查找TodoList
@@ -90,8 +101,26 @@ public class TodoListService {
 │                                   └─→ 设置新类别并保存 → 结束
 */
 
-//    public List<GetListResponse> getAllLists(Long userId) {
-//    }
+    public List<GetListResponse> getAllLists(Long userId) {
+        List<TodoList> userTodoLists = todoListRepository.findByUser_Id(userId);
+
+        List<GetListResponse> res = null;
+
+        return userTodoLists.stream()
+                .map(todoList -> {
+
+                    List<Long> collect = todoList.getTasks().stream()
+                            .map(Task::getId)
+                            .collect(Collectors.toList());
+
+                    return new GetListResponse(
+                            todoList.getId(),
+                            todoList.getCategory(),
+                            collect
+                    );
+                })
+                .collect(Collectors.toList());
+    }
 /*TODO 获取所有 todolist
 该方法根据用户ID获取所有待办事项列表，并构建包含任务ID、列表ID和分类的响应数据返回。
 开始获取待办列表
