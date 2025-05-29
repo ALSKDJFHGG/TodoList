@@ -49,7 +49,7 @@ public class TodoListService {
 
         todoListRepository.save(newList);
     }
- /* TODO 新建任务列表
+ /* TODO 新建任务列表 --- ok
 开始创建任务列表
 │
 ├─→ 检查用户是否存在
@@ -71,10 +71,16 @@ public class TodoListService {
             throw new UserException(ListError.TASKLIST_NOT_FOUND);
         }
 
+        if (!todoListRepository.existsTodoListByUserId(userId)) {
+            throw new UserException(UserError.USER_NOT_FOUND);
+        }
+
+        taskRepository.deleteTasksByTodoListId(id);
+
         todoListRepository.deleteAllByIdAndUser_Id(id, userId);
 
     }
-/* TODO 删除 todolist
+/* TODO 删除 todolist --- ok
 开始删除TodoList
 ├─→ 根据id查找TodoList
 │   ├─→ 存在 → 根据 userId 查找用户
@@ -85,9 +91,20 @@ public class TodoListService {
 │   └─→ 不存在 → 抛出 LIST_NOT_EXIST → 结束
 */
 
-//    public void changeListCategory(Long id, String newCategory, Long userId) {
-//    }
-/*TODO 更新 todolist 的类别
+    public void changeListCategory(Long id, String newCategory, Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new UserException(UserError.USER_NOT_FOUND);
+        }
+        if (todoListRepository.existsByUser_IdAndCategory(userId, newCategory)) {
+            throw new UserException(ListError.TASKLIST_ALREADY_EXIST);
+        }
+
+        TodoList todoList = todoListRepository.findById(id).orElseThrow(() -> new UserException(ListError.TASKLIST_NOT_FOUND));
+
+        todoList.setCategory(newCategory);
+        todoListRepository.save(todoList);
+    }
+/*TODO 更新 todolist 的类别 --- ok_
 开始更新类别
 ├─→ 根据userId查找用户
 │   ├─→ 用户不存在 → 抛出 USER_NULL 异常 → 结束
@@ -121,7 +138,7 @@ public class TodoListService {
                 })
                 .collect(Collectors.toList());
     }
-/*TODO 获取所有 todolist
+/*TODO 获取所有 todolist --- ok
 该方法根据用户ID获取所有待办事项列表，并构建包含任务ID、列表ID和分类的响应数据返回。
 开始获取待办列表
 ├─→ 调用 findTodoListByUserId 获取原始数据
@@ -133,9 +150,21 @@ public class TodoListService {
 └─→ 返回结果列表 res（响应标准化）
      */
 
-//    public GetListResponse getListById(Long id) {
-//    }
-/*TODO 根据 id 获取 todolist
+    public GetListResponse getListById(Long id) {
+        if (!todoListRepository.existsById(id)) {
+            throw new UserException(ListError.TASKLIST_NOT_FOUND);
+        }
+        TodoList todoList = todoListRepository.findById(id).orElseThrow(() -> new UserException(ListError.TASKLIST_NOT_FOUND));
+
+        List<Long> taskIds = taskRepository.findIdsByTodoList_Id(id);
+
+        return GetListResponse.builder()
+                .id(id)
+                .tasks(taskIds)
+                .category(todoList.getCategory())
+                .build();
+    }
+/*TODO 根据 id 获取 todolist --- ok_
 开始
 └─ 通过 id 查找 todolist
     └─ 查找到的 todolist 是否存在

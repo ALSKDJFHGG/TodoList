@@ -25,7 +25,7 @@ private final TodoListService todoListService;
     @Operation(summary = "新建一个任务列表，返回'创建成功'字符串")
     @PutMapping("/{category}")
     public ApiResponse<String> create(@PathVariable String category, @RequestAttribute Long userId) {
-        // TODO 新建一个任务列表
+        // TODO 新建一个任务列表 --- ok
         todoListService.create(category, userId);
 
         return ApiResponse.success("创建任务列表成功");
@@ -34,7 +34,7 @@ private final TodoListService todoListService;
     @Operation(summary = "根据id删除任务列表，返回'删除成功'字符串")
     @DeleteMapping("/{id}")
     public ApiResponse<String> delete(@PathVariable Long id, @RequestAttribute Long userId) {
-        // TODO 删除任务列表
+        // TODO 删除任务列表 --- ok
 
         todoListService.delete(id, userId);
 
@@ -42,29 +42,33 @@ private final TodoListService todoListService;
 
     }
 
-//    @Operation(summary = "根据id修改列表的类别，返回"修改成功"字符串")
-//    @PatchMapping("/change_category/{id}")
-//    public ApiResponse<String> changeCategory(@PathVariable Long id, @RequestAttribute Long userId,
-//                                              @Valid @RequestParam @NotBlank(message = "类别不能为空") String newCategory) {
-//        // TODO 修改任务列表的类型
-//
-//    }
+    @Operation(summary = "根据id修改列表的类别，返回'修改成功'字符串")
+    @PatchMapping("/change_category/{id}")
+    public ApiResponse<String> changeCategory(@PathVariable Long id, @RequestAttribute Long userId,
+                                              @Valid @RequestParam @NotBlank(message = "类别不能为空") String newCategory) {
+        // TODO 修改任务列表的类型 --- ok_
+        todoListService.changeListCategory(id, newCategory, userId);
+
+        return ApiResponse.success("修改成功");
+    }
 
     @Operation(summary = "获取所有的任务列表，返回一个表示操作成功的API响应，ApiResponse.success(lists)",
             description = "注意, 这个api返回的值是一个json格式的数据, 每个对象包含一个 category(类别) " +
                     "tasks(保存的是task的id),如果你你想获取对应的id, 那么你需要调用task的api -> /task/get 逐个获取task")
     @GetMapping({"/", ""})
     public ApiResponse<List<GetListResponse>> fetch(@RequestAttribute Long userId) {
-        // TODO 获取所有的任务列表
+        // TODO 获取所有的任务列表 --- ok
 
         List<GetListResponse> lists = todoListService.getAllLists(userId);
 
         return ApiResponse.success(lists);
     }
 
-//    @Operation(summary = "根据id获取任务列表，返回一个封装了任务列表查询结果的响应对象,ApiResponse.success(getListResponse)")
-//    @GetMapping("/{id}")
-//    public ApiResponse<GetListResponse> get(@PathVariable Long id) {
-//        // TODO 根据 id 获取对应的任务列表
-//    }
+    @Operation(summary = "根据id获取任务列表，返回一个封装了任务列表查询结果的响应对象,ApiResponse.success(getListResponse)")
+    @GetMapping("/{id}")
+    public ApiResponse<GetListResponse> get(@PathVariable Long id) {
+        // TODO 根据 id 获取对应的任务列表 --- ok_
+        GetListResponse listById = todoListService.getListById(id);
+        return ApiResponse.success(listById);
+    }
 }
