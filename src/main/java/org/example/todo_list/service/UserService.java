@@ -87,22 +87,7 @@ public class UserService {
 */
 
     public String storeFile(Long userId, MultipartFile file) throws IOException {
-        if (file.isEmpty()) {
-            throw new UserException(UserError.INVALID_FILE);
-        }
-
-        String originalFilename = file.getOriginalFilename();
-        if (originalFilename == null || file.getOriginalFilename().isEmpty()) {
-            throw new UserException(UserError.INVALID_FILE);
-        }
-
-        String extension = "";
-        int dotIndex = originalFilename.lastIndexOf('.');
-        if (dotIndex > 0) {
-            extension = originalFilename.substring(dotIndex);
-        } else {
-            throw new UserException(UserError.INVALID_FILE_EXTENSION);
-        }
+        String extension = getString(file);
 
         String newFilename = UUID.randomUUID() + extension;
 
@@ -134,6 +119,27 @@ public class UserService {
         userRepository.save(user);
 
         return accessUrl;
+    }
+
+    // 封装的获取文件名函数
+    private static String getString(MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new UserException(UserError.INVALID_FILE);
+        }
+
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null || file.getOriginalFilename().isEmpty()) {
+            throw new UserException(UserError.INVALID_FILE);
+        }
+
+        String extension = "";
+        int dotIndex = originalFilename.lastIndexOf('.');
+        if (dotIndex > 0) {
+            extension = originalFilename.substring(dotIndex);
+        } else {
+            throw new UserException(UserError.INVALID_FILE_EXTENSION);
+        }
+        return extension;
     }
 /* TODO 存储头像图片. 随意你存储在哪里, 只要最终可以通过 http://localhost:8080/images/文件名 这个地址访问到对应的图片就算成功----ok
 开始上传文件

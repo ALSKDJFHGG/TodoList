@@ -2,7 +2,6 @@ package org.example.todo_list.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.Duration;
 
 @Slf4j
 @Tag(name = "用户相关Api", description = "用于登录和注册")
@@ -53,7 +51,6 @@ public class UserController {
         // 调用登录接口
         userService.login(request);
 
-
         User user = userRepository.findByUsername(request.username());
         // 生成用户 token
         String token = jwtUtils.generateToken(user.getId());
@@ -69,9 +66,9 @@ public class UserController {
         UserResponse userResponse = UserResponse.builder()
                 .id(user.getId())
                 .username(user.getUsername())
+                .avatarUrl(user.getAvatarUrl())
                 .build();
         return ApiResponse.success(userResponse);
-
     }
 
     @Operation(summary = "更改用户信息", description = "增量更新, 可以传入一个或者多个值, 传入的数据对应的字段如果不为空, 就更新他")

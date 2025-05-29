@@ -16,8 +16,6 @@ import org.example.todo_list.security.JwtUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service//表示该类是一个Spring服务组件，用于业务逻辑处理。
