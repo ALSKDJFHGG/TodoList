@@ -3,7 +3,7 @@ package org.example.todo_list.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.todo_list.dto.response.GetListResponse;
-import org.example.todo_list.exception.UserException;
+import org.example.todo_list.exception.ListException;
 import org.example.todo_list.exception.errors.ListError;
 import org.example.todo_list.exception.errors.UserError;
 import org.example.todo_list.model.Task;
@@ -29,15 +29,15 @@ public class TodoListService {
     public void create(String category, Long userId) {
 
         if (!userRepository.existsById(userId)) {
-            throw new UserException(UserError.USER_NOT_FOUND);
+            throw new ListException(UserError.USER_NOT_FOUND);
         }
 
         if (todoListRepository.existsByUser_IdAndCategory(userId, category)) {
-            throw new UserException(ListError.TASKLIST_ALREADY_EXIST);
+            throw new ListException(ListError.TASKLIST_ALREADY_EXIST);
         }
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserException(UserError.USER_NOT_FOUND));
+                .orElseThrow(() -> new ListException(UserError.USER_NOT_FOUND));
 
         TodoList newList = new TodoList();
         newList.setCategory(category);
@@ -66,11 +66,11 @@ public class TodoListService {
 
     public void delete(Long id, Long userId) {
         if (!todoListRepository.existsById(id)) {
-            throw new UserException(ListError.TASKLIST_NOT_FOUND);
+            throw new ListException(ListError.TASKLIST_NOT_FOUND);
         }
 
         if (!todoListRepository.existsTodoListByUserId(userId)) {
-            throw new UserException(UserError.USER_NOT_FOUND);
+            throw new ListException(UserError.USER_NOT_FOUND);
         }
 
         taskRepository.deleteTasksByTodoListId(id);
@@ -91,13 +91,13 @@ public class TodoListService {
 
     public void changeListCategory(Long id, String newCategory, Long userId) {
         if (!userRepository.existsById(userId)) {
-            throw new UserException(UserError.USER_NOT_FOUND);
+            throw new ListException(UserError.USER_NOT_FOUND);
         }
         if (todoListRepository.existsByUser_IdAndCategory(userId, newCategory)) {
-            throw new UserException(ListError.TASKLIST_ALREADY_EXIST);
+            throw new ListException(ListError.TASKLIST_ALREADY_EXIST);
         }
 
-        TodoList todoList = todoListRepository.findById(id).orElseThrow(() -> new UserException(ListError.TASKLIST_NOT_FOUND));
+        TodoList todoList = todoListRepository.findById(id).orElseThrow(() -> new ListException(ListError.TASKLIST_NOT_FOUND));
 
         todoList.setCategory(newCategory);
         todoListRepository.save(todoList);
@@ -150,9 +150,9 @@ public class TodoListService {
 
     public GetListResponse getListById(Long id) {
         if (!todoListRepository.existsById(id)) {
-            throw new UserException(ListError.TASKLIST_NOT_FOUND);
+            throw new ListException(ListError.TASKLIST_NOT_FOUND);
         }
-        TodoList todoList = todoListRepository.findById(id).orElseThrow(() -> new UserException(ListError.TASKLIST_NOT_FOUND));
+        TodoList todoList = todoListRepository.findById(id).orElseThrow(() -> new ListException(ListError.TASKLIST_NOT_FOUND));
 
         List<Long> taskIds = taskRepository.findIdsByTodoList_Id(id);
 

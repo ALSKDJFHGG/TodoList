@@ -6,22 +6,17 @@ import org.example.todo_list.dto.request.CreateTaskRequest;
 import org.example.todo_list.dto.request.UpdateTaskRequest;
 import org.example.todo_list.dto.response.GetTaskResponse;
 import org.example.todo_list.exception.TaskException;
-import org.example.todo_list.exception.UserException;
 import org.example.todo_list.exception.errors.ListError;
 import org.example.todo_list.exception.errors.TaskError;
 import org.example.todo_list.model.Task;
 import org.example.todo_list.model.TodoList;
-import org.example.todo_list.model.User;
 import org.example.todo_list.repository.jpa.TaskRepository;
 import org.example.todo_list.repository.jpa.TodoListRepository;
 import org.example.todo_list.repository.jpa.UserRepository;
 import org.springframework.stereotype.Service;
-
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -39,7 +34,7 @@ public class TaskService {
         }
 
         TodoList todoList = todoListRepository.findTodoListByCategoryAndUserId(createTaskRequest.category(), userId)
-                .orElseThrow(() -> new UserException(ListError.TASKLIST_NOT_FOUND));
+                .orElseThrow(() -> new TaskException(ListError.TASKLIST_NOT_FOUND));
 
         Long deadline = createTaskRequest.deadline();
         if (deadline != null) {
@@ -49,7 +44,7 @@ public class TaskService {
             );
 
             if (dueDate.isBefore(LocalDateTime.now())) {
-                throw new UserException(TaskError.INVALID_DUE_DATE);
+                throw new TaskException(TaskError.INVALID_DUE_DATE);
             }
         }
 
@@ -81,11 +76,11 @@ public class TaskService {
 
     public GetTaskResponse getTask(Long id) {
         if (!taskRepository.existsById(id)) {
-            throw new UserException(TaskError.TASK_NOT_FOUND);
+            throw new TaskException(TaskError.TASK_NOT_FOUND);
         }
 
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new UserException(TaskError.TASK_NOT_FOUND));
+                .orElseThrow(() -> new TaskException(TaskError.TASK_NOT_FOUND));
 
         return GetTaskResponse.builder()
                 .id(task.getId())
@@ -104,7 +99,7 @@ public class TaskService {
 
     public void deleteTask(Long id) {
 //        if (!taskRepository.existsById(id)) {
-//            throw new UserException(TaskError.TASK_NOT_FOUND);
+//            throw new TaskException(TaskError.TASK_NOT_FOUND);
 //        }
         Task task = taskRepository.findById(id).orElseThrow(() -> new TaskException(TaskError.TASK_NOT_FOUND));
         taskRepository.delete(task);
@@ -118,7 +113,7 @@ public class TaskService {
 
     public void updateTask(Long id, UpdateTaskRequest newTask, Long userId) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new UserException(TaskError.TASK_NOT_FOUND));
+                .orElseThrow(() -> new TaskException(TaskError.TASK_NOT_FOUND));
 
         task.setStatus(newTask.status());
 
@@ -130,13 +125,13 @@ public class TaskService {
             LocalDateTime now = LocalDateTime.now();
 
             if (dueDate.isBefore(now)) {
-                throw new UserException(TaskError.INVALID_DUE_DATE);
+                throw new TaskException(TaskError.INVALID_DUE_DATE);
             }
 
             LocalDateTime maxDate = LocalDateTime.of(2038, 1, 20, 0, 0);
 
             if (dueDate.isAfter(maxDate)) {
-                throw new UserException(TaskError.INVALID_INITIAL_STATUS);
+                throw new TaskException(TaskError.INVALID_INITIAL_STATUS);
             }
 
             task.setDeadline(newTask.deadline());
