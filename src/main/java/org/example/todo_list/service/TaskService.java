@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.todo_list.dto.request.CreateTaskRequest;
 import org.example.todo_list.dto.request.UpdateTaskRequest;
 import org.example.todo_list.dto.response.GetTaskResponse;
+import org.example.todo_list.exception.TaskException;
 import org.example.todo_list.exception.UserException;
 import org.example.todo_list.exception.errors.ListError;
 import org.example.todo_list.exception.errors.TaskError;
@@ -102,10 +103,11 @@ public class TaskService {
 */
 
     public void deleteTask(Long id) {
-        if (!taskRepository.existsById(id)) {
-            throw new UserException(TaskError.TASK_NOT_FOUND);
-        }
-        taskRepository.deleteById(id);
+//        if (!taskRepository.existsById(id)) {
+//            throw new UserException(TaskError.TASK_NOT_FOUND);
+//        }
+        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskException(TaskError.TASK_NOT_FOUND));
+        taskRepository.delete(task);
     }
 /* TODO 删除任务 --- ok
 开始
@@ -131,7 +133,7 @@ public class TaskService {
                 throw new UserException(TaskError.INVALID_DUE_DATE);
             }
 
-            LocalDateTime maxDate = LocalDateTime.of(2038, 1, 1, 0, 0);
+            LocalDateTime maxDate = LocalDateTime.of(2038, 1, 20, 0, 0);
 
             if (dueDate.isAfter(maxDate)) {
                 throw new UserException(TaskError.INVALID_INITIAL_STATUS);

@@ -64,6 +64,7 @@ public class UserService {
             throw new UserException(UserError.USER_NOT_FOUND);
         }
 
+
         if (passwordEncoder.matches(request.password(), user.getPassword())) {
             return true;
         } else {
@@ -162,28 +163,30 @@ public class UserService {
 
 
     public void updateUser(Long id, UpdateUserRequest newUser) {
-        if (userRepository.existsById(id)) {
-            User user = userRepository.getReferenceById(id);
 
-            String new_username = newUser.username();
-            if (!(new_username == null || new_username.isEmpty())) {
-                if (!new_username.matches("[a-zA-Z0-9_]{3,15}")) {
-                    log.warn("非法用户名: {}", new_username);
-                    throw new UserException(UserError.INVALID_USERNAME);
-                }
-                user.setUsername(new_username);
-            }
+        User user = userRepository.getReferenceById(id);
 
-            String new_password = newUser.password();
-            if (!(new_password == null || new_password.isEmpty())) {
-                String encodePassword = passwordEncoder.encode(new_password);
-                user.setPassword(encodePassword);
-            }
-            userRepository.save(user);
-
-        } else {
+        if (!userRepository.existsById(id)) {
             throw new UserException(UserError.USER_NOT_FOUND);
         }
+
+        if (newUser.username().isEmpty()) {
+            throw new UserException(UserError.INVALID_USERNAME);
+        }
+
+        if (!newUser.username().matches("[a-zA-Z0-9_]{3,15}")) {
+            log.warn("非法用户名: {}", newUser.username());
+            throw new UserException(UserError.INVALID_USERNAME);
+        }
+        user.setUsername(newUser.username());
+
+        if (newUser.password().isEmpty()) {
+            throw new UserException(UserError.AUTHENTICATION_FAILURE);
+        }
+        String encode = passwordEncoder.encode(newUser.password());
+        user.setPassword(encode);
+
+        userRepository.save(user);
     }
 /*TODO  更新用户信息----ok
 开始更新用户

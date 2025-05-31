@@ -22,6 +22,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     boolean existsByName(String name);
 
-    boolean existsById(Long id);
+    boolean existsById(Integer id);
 
 }

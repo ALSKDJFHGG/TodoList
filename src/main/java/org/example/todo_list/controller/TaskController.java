@@ -59,7 +59,7 @@ public class TaskController {
 
         taskService.deleteTask(id);
 
-        return ApiResponse.success("删除一个任务");
+        return ApiResponse.success(id.toString());
 
     }
 }
